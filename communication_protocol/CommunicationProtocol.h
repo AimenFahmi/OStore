@@ -21,7 +21,7 @@
 #define ITEM_STOCK_IS_UNSUFFICIENT "ISIU"
 #define ITEM_NOT_FOUND "INF"
 #define ITEM_STOCK_IS_FULL "ISIF"
-#define MESSAGE_NOT_UNDERSTOOD "MNU"
+#define MSG_IN_WRONG_FORMAT "MNU"
 
 /** Data types **/
 #define ITEM_T "item_t"

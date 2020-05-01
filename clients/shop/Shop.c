@@ -14,7 +14,7 @@ int shop_writeItem(item_t *item) {
 
     if (strcmp(ack_msg->content, SUCCESS) == 0) {
         printf("[+] Shop was able to write item '%s' with count %d\n", item->name, item->amount);
-    } else if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
+    } else if (strcmp(ack_msg->content, MSG_IN_WRONG_FORMAT) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
     }
@@ -34,7 +34,7 @@ int shop_increaseCountOfItem(char *item_name, int amount) {
         printf("[-] Shop was unable to increase count of item '%s' by %d because its stock is full\n", item_name, amount);
     } else if (strcmp(ack_msg->content, ITEM_NOT_FOUND) == 0) {
         printf("[-] Shop was unable to increase count of item '%s' by %d because the item doesn't exist in the store\n", item_name, amount);
-    } else if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
+    } else if (strcmp(ack_msg->content, MSG_IN_WRONG_FORMAT) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
     }

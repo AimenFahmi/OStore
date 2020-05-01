@@ -5,41 +5,34 @@
 #include <signal.h>
 #include "Server.h"
 
-
-void sigintHandler(int num) {
-    sqlite3_close_v2(database);
-    close(server_socket);
-    kill(getpid(), SIGKILL);
+char *handleRequest(char *request, item_t *item) {
+    char *return_value = NULL;
+    pthread_mutex_lock(&store_access);
+    if (strcmp(request, REQUEST_TO_ADD_NEW_ITEM) == 0) {
+        return_value = writeItemToStore(item, store);
+    } else if (strcmp(request, REQUEST_TO_INCREASE_COUNT_OF_ITEM) == 0) {
+        return_value = increaseCountOfItem(item->name, item->amount, store);
+    } else if (strcmp(request, REQUEST_TO_BUY_ITEM) == 0) {
+        return_value = requestItem(item->name, item->amount, store);
+    }
+    pthread_mutex_unlock(&store_access);
+    return return_value;
 }
 
 // Actual execution of the clients request/command
 char *treatMessage(msg_t *message) {
-    char *command = message->command;
     if (isMessage(message) == -1) {
-        printf("[-] Message not understood (First): %s\n", message->content);
-        return MESSAGE_NOT_UNDERSTOOD;
+        printf("[-] Message not understood: %s\n", message->content);
+        return MSG_IN_WRONG_FORMAT;
     }
-    if (command == NULL) {return NULL;}
+
+    char *command = message->command;
     if (strcmp(command, REQUEST_TO_CLOSE_SERVER) == 0) {return REQUEST_TO_CLOSE_SERVER;}
 
     char *returned_value = NULL;
     if (message->content != NULL && message->data_type != NULL && strcmp(message->data_type, ITEM_T) == 0) {
         item_t *item = convertStringToItem(message->content);
-
-        if (item == NULL) {
-            printf("[-] Message not understood (Second): %s\n", message->content);
-            return MESSAGE_NOT_UNDERSTOOD;
-        }
-
-        pthread_mutex_lock(&store_access);
-        if (strcmp(command, REQUEST_TO_ADD_NEW_ITEM) == 0) {
-            returned_value = writeItemToStore(item, store);
-        } else if (strcmp(command, REQUEST_TO_INCREASE_COUNT_OF_ITEM) == 0) {
-            returned_value = increaseCountOfItem(item->name, item->amount, store);
-        } else if (strcmp(command, REQUEST_TO_BUY_ITEM) == 0) {
-            returned_value = requestItem(item->name, item->amount, store);
-        }
-        pthread_mutex_unlock(&store_access);
+        returned_value = handleRequest(command, item);
     }
 
     return returned_value;
@@ -83,6 +76,13 @@ void *threadFunction(void *arg) {
             close(*client_socket);
         }
     }
+}
+
+
+void sigintHandler(int num) {
+    sqlite3_close_v2(database);
+    close(server_socket);
+    kill(getpid(), SIGKILL);
 }
 
 #pragma clang diagnostic push

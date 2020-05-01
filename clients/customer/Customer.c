@@ -21,7 +21,7 @@ int customer_buyItem(char *item_name, int amount) {
     } else if (strcmp(ack_msg->content, ITEM_NOT_FOUND) == 0) {
         printf("[-] Customer was unable to buy %d pieces of item '%s' because the item doesn't exist in the store\n", amount, item_name);
         return -1;
-    } else if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
+    } else if (strcmp(ack_msg->content, MSG_IN_WRONG_FORMAT) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
     }

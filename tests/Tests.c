@@ -19,9 +19,26 @@ int communicationProtocolTest() {
     msg_t *received_msg2 = convertStringToMessage(msg_to_send2);
     msg_t *received_msg3 = convertStringToMessage(msg_to_send3);
 
-    printMsg(received_msg1);
-    printMsg(received_msg2);
-    printMsg(received_msg3);
+    if (message1->length == received_msg1->length && strcmp(message1->command, received_msg1->command) == 0 &&
+    strcmp(message1->content, received_msg1->content) == 0 && strcmp(message1->data_type, received_msg1->data_type) == 0) {
+        printf("[+] msg_sent == msg_received (1): Success\n");
+    } else {
+        printf("[-] msg_sent == msg_received (1): Failure\n");
+    }
+
+    if (message2->length == received_msg2->length && strcmp(message2->command, received_msg2->command) == 0 &&
+        strcmp(message2->content, received_msg2->content) == 0 && strcmp(message2->data_type, received_msg2->data_type) == 0) {
+        printf("[+] msg_sent == msg_received (2): Success\n");
+    } else {
+        printf("[-] msg_sent == msg_received (2): Failure\n");
+    }
+
+    if (message3->length == received_msg3->length && strcmp(message3->command, received_msg3->command) == 0 &&
+        message3->content == NULL && message3->data_type == NULL) {
+        printf("[+] msg_sent == msg_received (3): Success\n");
+    } else {
+        printf("[-] msg_sent == msg_received (3): Failure\n");
+    }
 
     return 0;
 }
@@ -40,6 +57,6 @@ int tokenizationTest() {
 }
 
 int main() {
-    tokenizationTest();
+    communicationProtocolTest();
     return 0;
 }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "util/string_manipulation/StringManipulator.h"
 #include "data/item/Item.h"
-#include "data_structures/hashtable/HashTable.h"
+#include "data_structures/hashtable/Store_HashTable.h"
 #include "util/sqlite3/Sqlite3_Manager.h"
 #include "data/store/store.h"
 #include "communication_protocol/CommunicationProtocol.h"

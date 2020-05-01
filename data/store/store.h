@@ -6,7 +6,7 @@
 #define OSTORE_STORE_H
 
 #include "../../util/Common_Libraries.h"
-#include "../../data_structures/hashtable/HashTable.h"
+#include "../../data_structures/hashtable/Store_HashTable.h"
 #include "../../util/sqlite3/Sqlite3_Manager.h"
 #include "../../communication_protocol/CommunicationProtocol.h"
 

@@ -175,9 +175,9 @@ void sendMsg(int socket, msg_t *msg) {
 
 msg_t *receiveMsg(int socket) {
     char *final_message = NULL;
-    char buff[5];
-    memset(buff, 0, 5);
-    int return_value = recv(socket, buff, 5, 0);
+    char buff1[6];
+    memset(buff1, 0, 6);
+    int return_value = recv(socket, buff1, 5, 0);
 
     if (return_value <= 0) {
         printf("Couldn't receive message\n");
@@ -185,8 +185,8 @@ msg_t *receiveMsg(int socket) {
         exit(-1);
     }
 
-    buff[4] = '\0';
-    int expected_bytes = atoi(buff)-5;
+    buff1[5] = '\0';
+    int expected_bytes = atoi(buff1)-5;
     int nb_of_received_bytes = 0;
 
     while (nb_of_received_bytes < expected_bytes) {
@@ -194,7 +194,7 @@ msg_t *receiveMsg(int socket) {
         memset(buff2, 0, expected_bytes+1);
         nb_of_received_bytes += recv(socket, buff2, expected_bytes, 0);
         buff2[expected_bytes] = '\0';
-        final_message = concat(final_message, buff2);
+        final_message = concat(buff1, buff2);
     }
 
     msg_t *msg = convertStringToMessage(createString(final_message));

@@ -2,7 +2,7 @@
 // Created by Aimen Fahmi on 2020-04-17.
 //
 
-#include "HashTable.h"
+#include "Store_HashTable.h"
 
 
 // Memory allocation for a hashtable

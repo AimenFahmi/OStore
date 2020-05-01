@@ -2,7 +2,7 @@
 // Created by Aimen Fahmi on 2020-04-30.
 //
 
-#include "../communication_protocol/ConnectionHandler.h"
+#include "../../communication_protocol/ConnectionHandler.h"
 
 int main() {
     int client_socket = connectToServer("5555");

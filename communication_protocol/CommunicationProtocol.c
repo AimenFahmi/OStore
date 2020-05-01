@@ -105,16 +105,17 @@ msg_t *convertStringToMessage(char *message) {
 
     char **tokens = getTokens(message, MESSAGE_DELIMITER);
     msg_t *msg = malloc_safe_mode(sizeof(msg_t));
-    msg->length = 5+strlen(message);
-    msg->command = tokens[0];
+    msg->length = strlen(message);
+    msg->command = tokens[1];
 
-    if (tokens[1] != NULL) {
-        msg->data_type = tokens[1];
+    if (tokens[2] != NULL && strcmp(tokens[2], "") != 0) {
+        msg->data_type = tokens[2];
         char *content = NULL;
-        int i = 2;
-        while (tokens[i] != NULL) {
-            if (tokens[i+1] == NULL) {
+        int i = 3;
+        while (tokens[i] != NULL && strcmp(tokens[i], "") != 0) {
+            if (tokens[i+1] == NULL  || strcmp(tokens[i+1], "") == 0) {
                 content = concat(content, tokens[i]);
+                break;
             } else {
                 content = concat(content, tokens[i]);
                 content = concat(content, MESSAGE_DELIMITER);

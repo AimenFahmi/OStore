@@ -7,7 +7,7 @@
 
 #include <sqlite3.h>
 #include "../../data/item/Item.h"
-#include "../../data_structures/hashtable/HashTable.h"
+#include "../../data_structures/hashtable/Store_HashTable.h"
 
 void insertItem(sqlite3 *database, item_t *item);
 sqlite3 *openDatabase(char *path);

@@ -2,8 +2,8 @@
 // Created by Aimen Fahmi on 2020-04-17.
 //
 
-#ifndef OSTORE_HASHTABLE_H
-#define OSTORE_HASHTABLE_H
+#ifndef OSTORE_STORE_HASHTABLE_H
+#define OSTORE_STORE_HASHTABLE_H
 
 #define VALUE_AFTER_REMOVAL 0
 
@@ -37,4 +37,4 @@ item_t **ht_getAllItems(hash_table_t *hashTable);
 void ht_printEverything(hash_table_t *hashTable);
 void ht_print(hash_table_t *hashTable);
 
-#endif //OSTORE_HASHTABLE_H
+#endif //OSTORE_STORE_HASHTABLE_H
