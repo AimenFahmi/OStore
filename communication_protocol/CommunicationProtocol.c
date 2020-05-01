@@ -48,7 +48,6 @@ item_t *convertStringToItem(char *string) {
 
     int nb_of_tokens = 0;
     while (tokens[nb_of_tokens] != NULL) {nb_of_tokens++;}
-
     if (nb_of_tokens != 6) {
         printf("[-] Couldn't tokenize because nb_of_tokens = %d for: %s\n", nb_of_tokens, string);
         printf("[name: %s, amount: %s, price: %s, description: %s, imgUrl: %s, category: %s]\n",

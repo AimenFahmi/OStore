@@ -48,7 +48,6 @@ char *treatMessage(msg_t *message) {
 char *handleConnection(int client_socket) {
     msg_t *msg;
     char *acknowledgment;
-    int msg_counter = 0;
 
     while (1) {
         msg = receiveMsg(client_socket);
@@ -59,7 +58,6 @@ char *handleConnection(int client_socket) {
             return REQUEST_TO_CLOSE_SERVER;
         }
 
-        msg_counter++;
         acknowledgment = treatMessage(msg);
         sendMsg(client_socket, newMsg(ACKNOWLEDGMENT, STRING, acknowledgment));
     }
@@ -95,11 +93,11 @@ int start() {
     }
 
     signal(SIGINT, sigintHandler);
+
     database = openDatabase("../util/sqlite3/Items.db");
     store = createStoreFromDatabase(database);
     server_socket = listenForConnections(PORT, BACKLOG);
 
-    int i = 0;
     while(1) {
         int *p_client_socket = malloc_safe_mode(sizeof(int));
         *p_client_socket = accept(server_socket, NULL, NULL);
@@ -110,8 +108,6 @@ int start() {
             free(p_client_socket);
             continue;
         }
-
-        i++;
 
         pthread_mutex_lock(&connection_queue_access);
         enqueue(p_client_socket);
