@@ -70,18 +70,23 @@ int main() {
 
     printf("%s", item_as_string);
     printItem(item_as_item);*/
+    char buff1[10];
+    char buff2[15];
 
-    item_t *item = newItem("aimen", 43, 542.65323, "very good", "https://what", "category");
+    for (int i = 0; i < 5; ++i) {
+        buff1[i] = 'a';
+    }
+    buff1[5] = '\0';
 
-    msg_t *message1 = newMsg(REQUEST_TO_ADD_NEW_ITEM, ITEM_T, convertItemToString(item));
-    msg_t *message2 = newMsg("Some defined command", FLOAT, "435.6546");
-    msg_t *message3 = newMsg(REQUEST_TO_CLOSE_SERVER, NULL, NULL);
+    for (int i = 0; i < 8; ++i) {
+        buff2[i] = 'b';
+    }
+    buff2[8] = '\0';
 
-    char * msg_to_send = convertMessageToString(message2);
-    msg_t *received_msg = convertStringToMessage(msg_to_send);
 
-    printMsg(message2);
-    printMsg(received_msg);
+    char *string = concat(buff1, buff2);
+
+    printf("%s\n", string);
 
     return 0;
 }

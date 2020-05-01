@@ -7,37 +7,11 @@
 
 char *createString(char *string) {
     if (string == NULL) {
-        return "null";
+        return NULL;
     }
     char *newString = malloc_safe_mode(strlen(string) + 1);
     strcpy(newString, string);
     return newString;
-}
-
-// Tokenizes the string according to the delimiter and returns an array containing all the tokens
-char **tokenize(char *string, char *delimiters) {
-    int number_of_tokens = 0;
-    char *temp_string_1 = createString(string);
-    char *temp_string_2 = createString(string);
-
-    char *token = strtok(temp_string_1, delimiters);
-
-    while (token != NULL) {
-        number_of_tokens++;
-        token = strtok(NULL, delimiters);
-    }
-
-    char **tokens = malloc_safe_mode((number_of_tokens + 1) * sizeof(char *));
-
-    tokens[0] = strtok(temp_string_2, delimiters);
-
-    for (int i = 1; i < number_of_tokens; ++i) {
-        tokens[i] = strtok(NULL, delimiters);
-    }
-
-    tokens[number_of_tokens] = NULL;
-
-    return tokens;
 }
 
 char *concat(char *str1, char *str2) {
@@ -51,4 +25,55 @@ char *concat(char *str1, char *str2) {
     strcat(string, str1);
     strcat(string, str2);
     return createString(string);
+}
+
+char* substr(const char *src, int start_index, int end_index) {
+    // get length of the destination string
+    int len = end_index - start_index;
+
+    // allocate (len + 1) chars for destination (+1 for extra null character)
+    char *dest = (char*)malloc(sizeof(char) * (len + 1));
+
+    // extracts characters between start_index'th and end_index'th index from source string
+    // and copy them into the destination string
+    for (int i = start_index; i < end_index && (*(src + i) != '\0'); i++)
+    {
+        *dest = *(src + i);
+        dest++;
+    }
+
+    // null-terminate the destination string
+    *dest = '\0';
+
+    // return the destination string
+    return dest - len;
+}
+
+char **getTokens(char *string, char *delimiter) {
+    char delim = delimiter[0];
+    int nb_of_tokens = 0;
+
+    for (int i = 0; i < strlen(string); ++i) {
+        if (string[i] == delim) {nb_of_tokens++;}
+    }
+
+    char **tokens = malloc_safe_mode(((++nb_of_tokens)+1) * sizeof(char *));
+
+    int end_of_previous_token = 0;
+    for (int j = 0; j < nb_of_tokens; ++j) {
+        for (int i = end_of_previous_token; i < strlen(string); ++i) {
+            if (j == nb_of_tokens-1 && i == strlen(string) - 1) {
+                tokens[j] = substr(string, end_of_previous_token, i+1);
+            }
+            if (string[i] == delim) {
+                tokens[j] = substr(string, end_of_previous_token, i);
+                end_of_previous_token = i+1;
+                break;
+            }
+        }
+    }
+
+    tokens[nb_of_tokens] = NULL;
+
+    return tokens;
 }

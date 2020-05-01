@@ -15,6 +15,10 @@ void sigintHandler(int num) {
 // Actual execution of the clients request/command
 char *treatMessage(msg_t *message) {
     char *command = message->command;
+    if (isMessage(message) == -1) {
+        printf("[-] Message not understood (First): %s\n", message->content);
+        return MESSAGE_NOT_UNDERSTOOD;
+    }
     if (command == NULL) {return NULL;}
     if (strcmp(command, REQUEST_TO_CLOSE_SERVER) == 0) {return REQUEST_TO_CLOSE_SERVER;}
 
@@ -23,7 +27,7 @@ char *treatMessage(msg_t *message) {
         item_t *item = convertStringToItem(message->content);
 
         if (item == NULL) {
-            printf("[-] Message received: %s\n", message->content);
+            printf("[-] Message not understood (Second): %s\n", message->content);
             return MESSAGE_NOT_UNDERSTOOD;
         }
 
@@ -60,38 +64,6 @@ char *handleConnection(int client_socket) {
         sendMsg(client_socket, newMsg(ACKNOWLEDGMENT, STRING, acknowledgment));
     }
 }
-
-/*char *treatMessage(msg_t *message) {
-    item_t *item = convertStringToItem(message->content);
-    if (item == NULL) {
-        printf("[-] Message: %s\n", message->content);
-    }
-    return SUCCESS;
-}
-
-char *handleConnection(int client_socket) {
-    msg_t *msg;
-    char *acknowledgment;
-    int msg_counter = 0;
-
-    while (1) {
-        pthread_mutex_lock(&socket_communication_access);
-        msg = receiveMsgUsingSize(client_socket);
-        pthread_mutex_unlock(&socket_communication_access);
-
-        if (strcmp(msg->command, REQUEST_TO_CLOSE_CONNECTION) == 0) {
-            return REQUEST_TO_CLOSE_CONNECTION;
-        } else if (strcmp(msg->command, REQUEST_TO_CLOSE_SERVER) == 0) {
-            return REQUEST_TO_CLOSE_SERVER;
-        }
-
-        msg_counter++;
-        acknowledgment = treatMessage(msg);
-        pthread_mutex_lock(&socket_communication_access);
-        sendMsgUsingSize(client_socket, newMsg(ACKNOWLEDGMENT, STRING, acknowledgment));
-        pthread_mutex_unlock(&socket_communication_access);
-    }
-}*/
 
 void *threadFunction(void *arg) {
     while (1) {
@@ -140,7 +112,6 @@ int start() {
         }
 
         i++;
-        //printf("[+] Clients accepted so far: %d\n", i);
 
         pthread_mutex_lock(&connection_queue_access);
         enqueue(p_client_socket);

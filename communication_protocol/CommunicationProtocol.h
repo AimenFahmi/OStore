@@ -25,7 +25,7 @@
 
 /** Data types **/
 #define ITEM_T "item_t"
-#define END_OF_MESSAGE "\n"
+#define END_OF_MESSAGE "|"
 #define STRING "s"
 #define INT "i"
 #define CHAR "c"
@@ -34,12 +34,14 @@
 #define ACKNOWLEDGMENT "ack"
 
 #define MESSAGE_DELIMITER ">"
+#define NB_TOKENS_IN_ITEM 6
 #define PORT "9999"
 
 typedef struct {
-  char *command; // type of request
-  char *data_type; // string, int, float,...
-  char *content; // the actual content of the message
+    int length; // length of the message
+    char *command; // type of request
+    char *data_type; // string, int, float,...
+    char *content; // the actual content of the message
 } msg_t;
 
 msg_t *newMsg(char *command, char *data_type, char *content);
@@ -50,5 +52,7 @@ item_t *convertStringToItem(char *string);
 
 char *convertMessageToString(msg_t *message);
 msg_t *convertStringToMessage(char *string);
+
+int isMessage(msg_t *msg);
 
 #endif //OSTORE_COMMUNICATIONPROTOCOL_H

@@ -157,75 +157,47 @@ int listenForConnections(char *port, int backlog) {
     return newSocket;
 }
 
-msg_t *receiveMsgUsingSize(int socket) {
-    char buff[21];
-    int rv = recv(socket, buff, sizeof(buff), 0);
-
-    if (rv < 0) {
-        printf("[-] Couldn't receive message\n");
-        close(socket);
-        exit(-1);
-    }
-
-    int msg_size = atoi(buff);
-
-    char message[msg_size];
-    rv = recv(socket, message, sizeof(message), 0);
-
-    if (rv < 0) {
-        printf("[-] Couldn't receive message\n");
-        close(socket);
-        exit(-1);
-    }
-
-    return convertStringToMessage(createString(message));
-}
-
-void sendMsgUsingSize(int socket, msg_t *msg) {
-    char *message = convertMessageToString(msg);
-    char msg_size[21];
-    sprintf(msg_size, "%ld", (strlen(message) + 1));
-    int rv = send(socket, msg_size, sizeof(msg_size), 0);
-
-    if (rv < 0) {
-        printf("[-] Couldn't send msg_size: %s\n", msg_size);
-        close(socket);
-        exit(-1);
-    }
-
-    rv = send(socket, message, strlen(message) + 1, 0);
-
-    if (rv < 0) {
-        printf("[-] Couldn't send message: %s\n", msg->content);
-        close(socket);
-        exit(-1);
-    }
-}
-
-void closeConnectionUsingSize(int socket) {
-    msg_t *msg = newMsg(REQUEST_TO_CLOSE_SERVER, NULL, NULL);
-    sendMsgUsingSize(socket, msg);
-}
-
 void sendMsg(int socket, msg_t *msg) {
     char *message = convertMessageToString(msg);
-    int return_value = send(socket, message, strlen(message) + 1, 0);
-    if (return_value < 0) {
-        printf("Couldn't send message: %s\n", message);
-        close(socket);
-        exit(-1);
+    int nb_sent_bytes = 0;
+
+    while (nb_sent_bytes < msg->length) {
+        char *message_to_send = substr(message, nb_sent_bytes, strlen(message));
+        nb_sent_bytes += send(socket, message_to_send, strlen(message_to_send), 0);
+
+        if (nb_sent_bytes <= 0) {
+            printf("Couldn't send message: %s\n", message);
+            close(socket);
+            exit(-1);
+        }
     }
 }
 
 msg_t *receiveMsg(int socket) {
-    char message[1024];
-    int return_value = recv(socket, message, sizeof(message), 0);
-    if (return_value < 0) {
+    char *final_message = NULL;
+    char buff[5];
+    memset(buff, 0, 5);
+    int return_value = recv(socket, buff, 5, 0);
+
+    if (return_value <= 0) {
         printf("Couldn't receive message\n");
         close(socket);
         exit(-1);
     }
-    msg_t *msg = convertStringToMessage(createString(message));
+
+    buff[4] = '\0';
+    int expected_bytes = atoi(buff)-5;
+    int nb_of_received_bytes = 0;
+
+    while (nb_of_received_bytes < expected_bytes) {
+        char buff2[expected_bytes+1];
+        memset(buff2, 0, expected_bytes+1);
+        nb_of_received_bytes += recv(socket, buff2, expected_bytes, 0);
+        buff2[expected_bytes] = '\0';
+        final_message = concat(final_message, buff2);
+    }
+
+    msg_t *msg = convertStringToMessage(createString(final_message));
     return msg;
 }
 

@@ -23,8 +23,4 @@ msg_t *receiveMsg(int socket);
 void closeConnection(int socket);
 void closeServer(int socket);
 
-msg_t *receiveMsgUsingSize(int socket);
-void sendMsgUsingSize(int socket, msg_t *msg);
-void closeConnectionUsingSize(int socket);
-
 #endif //OSTORE_CONNECTIONHANDLER_H

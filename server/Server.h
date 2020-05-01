@@ -25,7 +25,7 @@ pthread_mutex_t store_access = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t connection_queue_access = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t queue_is_empty = PTHREAD_COND_INITIALIZER;
 
-pthread_mutex_t socket_communication_access = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t tokenize_protector = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t printing_access = PTHREAD_MUTEX_INITIALIZER;
 
 

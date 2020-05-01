@@ -7,6 +7,7 @@
 
 char *createString(char *string);
 char *concat(char *str1, char *str2);
-char **tokenize(char *string, char *delimiters);
+char* substr(const char *src, int start_index, int end_index);
+char **getTokens(char *string, char *delimiter);
 
 #endif //OSTORE_STRINGMANIPULATOR_H

@@ -12,13 +12,12 @@ int shop_writeItem(item_t *item) {
     sendMsg(shop_socket, msg);
     msg_t *ack_msg = receiveMsg(shop_socket);
 
-    if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
+    if (strcmp(ack_msg->content, SUCCESS) == 0) {
+        printf("[+] Shop was able to write item '%s' with count %d\n", item->name, item->amount);
+    } else if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
-    } else if (strcmp(ack_msg->content, SUCCESS) == 0) {
-        printf("[+] Shop was able to write item '%s' with count %d\n", item->name, item->amount);
     }
-
     return 1;
 }
 
@@ -35,9 +34,7 @@ int shop_increaseCountOfItem(char *item_name, int amount) {
         printf("[-] Shop was unable to increase count of item '%s' by %d because its stock is full\n", item_name, amount);
     } else if (strcmp(ack_msg->content, ITEM_NOT_FOUND) == 0) {
         printf("[-] Shop was unable to increase count of item '%s' by %d because the item doesn't exist in the store\n", item_name, amount);
-    }
-
-    if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
+    } else if (strcmp(ack_msg->content, MESSAGE_NOT_UNDERSTOOD) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
     }
@@ -64,6 +61,7 @@ void automaticTest(int max_transactions, int min_transactions) {
 }
 
 int main() {
+    msleep(100);
     shop_socket = connectToServer(PORT);
     automaticTest(100, 80);
     closeConnection(shop_socket);
