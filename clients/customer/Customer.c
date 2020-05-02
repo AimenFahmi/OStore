@@ -42,7 +42,8 @@ void automaticTest(int max_transactions, int min_transactions) {
 int main() {
     msleep(100);
     customer_socket = connectToServer(PORT);
-    automaticTest(20, 10);
+    automaticTest(6500, 6000);
     closeConnection(customer_socket);
+    getTime("main");
     return 0;
 }

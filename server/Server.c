@@ -5,17 +5,45 @@
 #include <signal.h>
 #include "Server.h"
 
+void lock_access_to_item(char *request, char *item_name, int amount) {
+    pthread_mutex_lock(&request_manager_access);
+    if (rm_ht_contains(item_name, requestManager) == 0) {
+        while (isBeingUsed(item_name, requestManager) == 0) {
+            pthread_cond_wait(&(rm_ht_getStatus(item_name, requestManager)->condition_var), &request_manager_access);
+        }
+        rm_ht_setStatus(item_name, IS_BEING_USED, requestManager);
+    } else {
+        rm_ht_entry_t *newEntry = rm_ht_createEntry(item_name, rm_ht_createStatus(IS_BEING_USED, request, amount));
+        rm_ht_add(newEntry, requestManager);
+    }
+    pthread_mutex_unlock(&request_manager_access);
+}
+
+void unlock_access_to_item(char *item_name) {
+    pthread_mutex_lock(&request_manager_access);
+    rm_ht_setStatus(item_name, IS_NOT_BEING_USED, requestManager);
+    pthread_cond_signal(&(rm_ht_getStatus(item_name, requestManager)->condition_var));
+    pthread_mutex_unlock(&request_manager_access);
+}
+
+// rm_ht stands for RequestManager_HashTable
 char *handleRequest(char *request, item_t *item) {
     char *return_value = NULL;
-    pthread_mutex_lock(&store_access);
+    char *item_name = item->name;
+    int amount = item->amount;
+
+    lock_access_to_item(request, item_name, amount);
+
     if (strcmp(request, REQUEST_TO_ADD_NEW_ITEM) == 0) {
         return_value = writeItemToStore(item, store);
     } else if (strcmp(request, REQUEST_TO_INCREASE_COUNT_OF_ITEM) == 0) {
-        return_value = increaseCountOfItem(item->name, item->amount, store);
+        return_value = increaseCountOfItem(item_name, amount, store);
     } else if (strcmp(request, REQUEST_TO_BUY_ITEM) == 0) {
-        return_value = requestItem(item->name, item->amount, store);
+        return_value = requestItem(item_name, amount, store);
     }
-    pthread_mutex_unlock(&store_access);
+
+    unlock_access_to_item(item_name);
+
     return return_value;
 }
 
@@ -87,16 +115,17 @@ void sigintHandler(int num) {
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
-int start() {
+int run() {
+
+    signal(SIGINT, sigintHandler);
+    database = openDatabase("../util/sqlite3/Items.db");
+    store = createStoreFromDatabase(database);
+    requestManager = rm_ht_createHashTable(REQUEST_MANAGER_SIZE);
+    server_socket = listenForConnections(PORT, BACKLOG);
+
     for (int i = 0; i < MAX_THREADS; ++i) {
         pthread_create(&thread_pool[i], NULL, threadFunction, NULL);
     }
-
-    signal(SIGINT, sigintHandler);
-
-    database = openDatabase("../util/sqlite3/Items.db");
-    store = createStoreFromDatabase(database);
-    server_socket = listenForConnections(PORT, BACKLOG);
 
     while(1) {
         int *p_client_socket = malloc_safe_mode(sizeof(int));
@@ -119,6 +148,6 @@ int start() {
 
 
 int main() {
-    start();
+    run();
     return 0;
 }

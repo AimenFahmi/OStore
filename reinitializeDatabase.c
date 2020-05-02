@@ -15,7 +15,9 @@ float newPrice() {
 }
 
 int main() {
-    /*srand(time(0));
+
+    srand(time(0));
+
     sqlite3 *database = openDatabase("../util/sqlite3/Items.db");
 
     store_t *store = createStore();
@@ -52,7 +54,7 @@ int main() {
     writeItemToStore(newItem("SCOTT GAMBLER 900 TUNED BIKE", rand()%100, newPrice(), "The all NEW Gambler Tuned was designed for one thing and one thing only, pure, unadulterated speed. We made it to get you to take lines you'd never thought imaginable, to make you want to go to the bathroom before your race run - twice. We made it so that when you drop out of the start gate, the only aspect holding you back will be, well, you. Taking years of racing development and mixing it with our carbon expertise, this bike is our answer to the needs of white-knuckle downhill racing. The Gambler, Simply Fast.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274656_1586300_png_overview_4.png", "Downhill bikes"), store);
     writeItemToStore(newItem("SCOTT GAMBLER 910 BIKEv", rand()%100, newPrice(), "The all NEW Gambler was designed for one thing and one thing only, pure, unadulterated speed. We made it to get you to take lines you'd never thought imaginable, to make you want to go to the bathroom before your race run - twice. We made it so that when you drop out of the start gate, the only aspect holding you back will be, well, you. Taking years of racing development and mixing it with our carbon expertise, this bike is our answer to the needs of white-knuckle downhill racing. The Gambler, Simply Fast.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274657_1586301_png_overview_2.png", "Downhill bikes"), store);
     writeItemToStore(newItem("SCOTT GAMBLER 920 BIKE", rand()%100, newPrice(), "The all NEW Gambler was designed for one thing and one thing only, pure, unadulterated speed. We made it to get you to take lines you'd never thought imaginable, to make you want to go to the bathroom before your race run - twice. We made it so that when you drop out of the start gate, the only aspect holding you back will be, well, you. The Gambler 920 is the lightweight alloy DH bike of your dreams, and it too is simply fast.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274658_1586302_png_overview_4.png", "Downhill bikes"), store);
-    writeItemToStore(newItem("SCOTT GAMBLER 930 BIKE", rand()%100, newPrice(), "The all NEW Gambler was designed for one thing and one thing only, pure, unadulterated speed. We made it to get you to take lines you'd never thought imaginable, to make you want to go to the bathroom before your race run - twice. We made it so that when you drop out of the start gate, the only aspect holding you back will be, well, you. The Gambler 930 is the lightweight alloy DH bike of your dreams, and it too is simply fast.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274659_1586303_png_overview_2.png", "Downhill bikes"), store);
+    writeItemToStore(newItem("SCOTT GAMBLER 930 BIKE", rand()%100, newPrice(), "The all NEW Gambler was designed for one thing and one thing only, pure, unadulterated speed. We made it to get you to take lines you'd never thought imaginable, to make you want to go to the bathroom before your race run - twice. We made it so that when you drop out of the run gate, the only aspect holding you back will be, well, you. The Gambler 930 is the lightweight alloy DH bike of your dreams, and it too is simply fast.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274659_1586303_png_overview_2.png", "Downhill bikes"), store);
     writeItemToStore(newItem("SCOTT VOLTAGE YZ 0.1 BIKE", rand()%100, newPrice(), "The SCOTT Voltage YZ 0.1 is our Pro riders replica bike built around a high-end Alloy dirtjump frame. Equipped with ultashort adjustable chain stays, a tapered headtube and high-end components, this bike is perfect for hitting the pumptrack, the dirtjumps, or jibbin' through the streets.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274660_1586304_png_overview_2.png", "Downhill bikes"), store);
 
 
@@ -62,31 +64,14 @@ int main() {
     dumpStoreToDatabase(database, store);
     displayDatabase(database);
 
-    sqlite3_close_v2(database);*/
+    sqlite3_close_v2(database);
 
-    /*item_t *data = newItem("SCOTT SCALE RC 900 WORLD CUP AXS BIKE", rand()%100, newPrice(), "World Cup aspirations require a World Cup Quality ride. Lightweight, stiff, fast as this is what you can expect from the Scale RC 900 World Cup. With SRAM's new AXS Wireless shifting and carbon wizardry, the World Cup can help you go from Nino Schurter super fan to perhaps putting on the leader's jersey. The bike can make it there, can you? Only time will tell.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274586_1586218_png_overview_4.png", "Cross Country Bikes");
+    item_t *data = newItem("SCOTT SCALE RC 900 WORLD CUP AXS BIKE", rand()%100, newPrice(), "World Cup aspirations require a World Cup Quality ride. Lightweight, stiff, fast as this is what you can expect from the Scale RC 900 World Cup. With SRAM's new AXS Wireless shifting and carbon wizardry, the World Cup can help you go from Nino Schurter super fan to perhaps putting on the leader's jersey. The bike can make it there, can you? Only time will tell.", "https://dfp2hfrf3mn0u.cloudfront.net/274/274586_1586218_png_overview_4.png", "Cross Country Bikes");
     char * item_as_string = convertItemToString(data);
     item_t *item_as_item = convertStringToItem(item_as_string);
 
     printf("%s", item_as_string);
-    printItem(item_as_item);*/
-    char buff1[10];
-    char buff2[15];
-
-    for (int i = 0; i < 5; ++i) {
-        buff1[i] = 'a';
-    }
-    buff1[5] = '\0';
-
-    for (int i = 0; i < 8; ++i) {
-        buff2[i] = 'b';
-    }
-    buff2[8] = '\0';
-
-
-    char *string = concat(buff1, buff2);
-
-    printf("%s\n", string);
+    printItem(item_as_item);
 
     return 0;
 }

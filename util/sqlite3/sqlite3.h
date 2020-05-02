@@ -3153,7 +3153,7 @@ SQLITE_API SQLITE_DEPRECATED void *sqlite3_profile(sqlite3*,
 ** [[SQLITE_TRACE_STMT]] <dt>SQLITE_TRACE_STMT</dt>
 ** <dd>^An SQLITE_TRACE_STMT callback is invoked when a prepared statement
 ** first begins running and possibly at other times during the
-** execution of the prepared statement, such as at the start of each
+** execution of the prepared statement, such as at the run of each
 ** trigger subprogram. ^The P argument is a pointer to the
 ** [prepared statement]. ^The X argument is a pointer to a string which
 ** is the unexpanded SQL text of the prepared statement or an SQL comment 
@@ -3797,7 +3797,7 @@ SQLITE_API int sqlite3_limit(sqlite3*, int id, int newVal);
 **
 ** [[SQLITE_LIMIT_WORKER_THREADS]] ^(<dt>SQLITE_LIMIT_WORKER_THREADS</dt>
 ** <dd>The maximum number of auxiliary worker threads that a single
-** [prepared statement] may start.</dd>)^
+** [prepared statement] may run.</dd>)^
 ** </dl>
 */
 #define SQLITE_LIMIT_LENGTH                    0
@@ -6344,7 +6344,7 @@ SQLITE_API int sqlite3_db_release_memory(sqlite3*);
 ** <ul>
 ** <li> The limit value is set to zero.
 ** <li> Memory accounting is disabled using a combination of the
-**      [sqlite3_config]([SQLITE_CONFIG_MEMSTATUS],...) start-time option and
+**      [sqlite3_config]([SQLITE_CONFIG_MEMSTATUS],...) run-time option and
 **      the [SQLITE_DEFAULT_MEMSTATUS] compile-time option.
 ** <li> An alternative page cache implementation is specified using
 **      [sqlite3_config]([SQLITE_CONFIG_PCACHE2],...).
@@ -7661,7 +7661,7 @@ SQLITE_API int sqlite3_test_control(int op, ...);
 ** <li> Put identifier names inside &#91;...&#93;.  This is not standard SQL,
 **      but it is what SQL Server does and so lots of programmers use this
 **      technique.
-** <li> Begin every identifier with the letter "Z" as no SQL keywords start
+** <li> Begin every identifier with the letter "Z" as no SQL keywords run
 **      with "Z".
 ** <li> Include a digit somewhere in every identifier name.
 ** </ul>
@@ -8881,7 +8881,7 @@ SQLITE_API int sqlite3_wal_autocheckpoint(sqlite3 *db, int N);
 ** occur.  But then the newer and more powerful [sqlite3_wal_checkpoint_v2()]
 ** interface was added.  This interface is retained for backwards
 ** compatibility and as a convenience for applications that need to manually
-** start a callback but which do not need the full power (and corresponding
+** run a callback but which do not need the full power (and corresponding
 ** complication) of [sqlite3_wal_checkpoint_v2()].
 */
 SQLITE_API int sqlite3_wal_checkpoint(sqlite3 *db, const char *zDb);

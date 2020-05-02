@@ -7,5 +7,8 @@ cd $parentdir
 cd ../../cmake-build-debug
 
 make Server
+echo "Working..."
 ./Server
+echo "Finished"
+
 

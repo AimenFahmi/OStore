@@ -3,6 +3,7 @@
 //
 
 #include "GeneralUtilities.h"
+#include "../../data/store/store.h"
 
 void printSeparationLine() {
     for (int i = 0; i < 400; ++i) {
@@ -37,4 +38,15 @@ int msleep(long msec) {
     } while (res && errno == EINTR);
 
     return res;
+}
+
+void startTimer() {
+    start = clock();
+}
+
+double getTime(char *functionName) {
+    stop = clock();
+    double cpu_time = ((double) (stop - start)) / CLOCKS_PER_SEC;
+    printf("\n[+] Time taken by %s(): %0.3f\n\n", functionName, cpu_time);
+    return cpu_time;
 }

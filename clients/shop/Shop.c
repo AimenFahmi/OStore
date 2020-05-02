@@ -18,6 +18,7 @@ int shop_writeItem(item_t *item) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
     }
+
     return 1;
 }
 
@@ -62,8 +63,10 @@ void automaticTest(int max_transactions, int min_transactions) {
 
 int main() {
     msleep(100);
+    startTimer();
     shop_socket = connectToServer(PORT);
-    automaticTest(100, 80);
+    automaticTest(6500, 6000);
     closeConnection(shop_socket);
+    getTime("main");
     return 0;
 }

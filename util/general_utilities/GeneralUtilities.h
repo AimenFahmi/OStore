@@ -12,4 +12,8 @@
 void printTitle(char *title);
 int msleep(long msec);
 
+clock_t start, stop;
+void startTimer();
+double getTime(char *functionName);
+
 #endif //OSTORE_GENERALUTILITIES_H

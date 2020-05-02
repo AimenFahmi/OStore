@@ -7,19 +7,7 @@ cd ../../cmake-build-debug
 
 make Customer
 
-for i in {1..80}
-do
-    ./Customer &
-done
-wait
-
-for i in {1..80}
-do
-    ./Customer &
-done
-wait
-
-for i in {1..80}
+for i in {1..40}
 do
     ./Customer &
 done

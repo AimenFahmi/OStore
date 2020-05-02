@@ -3,6 +3,7 @@
 //
 
 #include "Tests.h"
+#include "../data_structures/hashtable/RequestManaging_HashTable.h"
 
 int communicationProtocolTest() {
     item_t *item = newItem("aimen", 43, 542.65323, "very good", "https://what", "category");
@@ -56,7 +57,40 @@ int tokenizationTest() {
     return 0;
 }
 
+int requestManagementTest() {
+    char *randomNames[] = {"rafik", "aimen", "clara", "alec", "yassin", "abdullah", "fatima", "said", "rajab", "alem", "dafali", "soufian",
+                           "azzouz", "khadija", "yassmine", "houssam", "moustapha", "ismail", "burgers", "tea", "meat", "chicken", "coca cola"};
+    char *randomCommands[] = {REQUEST_TO_BUY_ITEM, REQUEST_TO_INCREASE_COUNT_OF_ITEM, REQUEST_TO_ADD_NEW_ITEM};
+    int randomUsage[] = {IS_BEING_USED, IS_NOT_BEING_USED};
+
+    int nb_names = 22;
+    int nb_commands = 3;
+    int nb_uses = 2;
+    //srand(time(NULL));
+
+    rm_hash_table_t * hashTable = rm_ht_createHashTable(5);
+
+    for (int i = 0; i < 100; ++i) {
+        int randomAmount = rand()%100;
+        int name_index = rand()%nb_names;
+        int command_index = rand()%nb_commands;
+        int usage_index = rand()%nb_uses;
+
+        rm_ht_status_t *status = rm_ht_createStatus(randomUsage[usage_index], randomCommands[command_index], randomAmount);
+
+        rm_ht_entry_t *entry = rm_ht_createEntry(randomNames[name_index], status);
+        rm_ht_add(entry, hashTable);
+    }
+    rm_ht_remove("yassmine", hashTable);
+    
+    rm_ht_print(hashTable);
+    printf("\n\n");
+    rm_ht_printEverything(hashTable);
+
+    return 0;
+}
+
 int main() {
-    communicationProtocolTest();
+    requestManagementTest();
     return 0;
 }
