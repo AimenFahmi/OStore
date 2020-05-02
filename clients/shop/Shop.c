@@ -13,7 +13,7 @@ int shop_writeItem(item_t *item) {
     msg_t *ack_msg = receiveMsg(shop_socket);
 
     if (strcmp(ack_msg->content, SUCCESS) == 0) {
-        printf("[+] Shop was able to write item '%s' with count %d\n", item->name, item->amount);
+        printf("[+] Shop %d was able to write item '%s' with count %d\n", getpid(), item->name, item->amount);
     } else if (strcmp(ack_msg->content, MSG_IN_WRONG_FORMAT) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;
@@ -30,11 +30,11 @@ int shop_increaseCountOfItem(char *item_name, int amount) {
     msg_t *ack_msg = receiveMsg(shop_socket);
 
     if (strcmp(ack_msg->content, SUCCESS) == 0) {
-        printf("[+] Shop was able to add %d pieces of item '%s'\n", amount, item_name);
+        printf("[+] Shop %d was able to add %d pieces of item '%s'\n", getpid(), amount, item_name);
     } else if (strcmp(ack_msg->content, ITEM_STOCK_IS_FULL) == 0) {
-        printf("[-] Shop was unable to increase count of item '%s' by %d because its stock is full\n", item_name, amount);
+        printf("[-] Shop %d was unable to increase count of item '%s' by %d because its stock is full\n", getpid(), item_name, amount);
     } else if (strcmp(ack_msg->content, ITEM_NOT_FOUND) == 0) {
-        printf("[-] Shop was unable to increase count of item '%s' by %d because the item doesn't exist in the store\n", item_name, amount);
+        printf("[-] Shop %d was unable to increase count of item '%s' by %d because the item doesn't exist in the store\n", getpid(), item_name, amount);
     } else if (strcmp(ack_msg->content, MSG_IN_WRONG_FORMAT) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
         return -1;

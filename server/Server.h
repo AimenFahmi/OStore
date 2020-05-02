@@ -12,7 +12,7 @@
 #include "../data_structures/hashtable/RequestManaging_HashTable.h"
 #include <pthread.h>
 
-#define MAX_THREADS 40
+#define MAX_THREADS 100
 #define BACKLOG 100
 #define CONNECTION_HANDLED "CH"
 

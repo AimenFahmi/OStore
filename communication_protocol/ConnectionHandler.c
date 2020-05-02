@@ -5,7 +5,7 @@
 #include "ConnectionHandler.h"
 #include "CommunicationProtocol.h"
 
-/*int connectToServer(char *port) {
+int connectToServer(char *port) {
     struct addrinfo hints, *server_info, *p;
     int return_value;
     int socket_to_return = -1;
@@ -103,9 +103,9 @@ int listenForConnections(char *port, int backlog) {
     }
 
     return socket_to_return;
-}*/
+}
 
-int connectToServer(char *port) {
+/*int connectToServer(char *port) {
     struct sockaddr_in server_address = {0};
     int newSocket = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -155,7 +155,7 @@ int listenForConnections(char *port, int backlog) {
     listen(newSocket, backlog);
 
     return newSocket;
-}
+}*/
 
 void sendMsg(int socket, msg_t *msg) {
     char *message = convertMessageToString(msg);

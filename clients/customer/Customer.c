@@ -14,12 +14,12 @@ int customer_buyItem(char *item_name, int amount) {
     msg_t *ack_msg = receiveMsg(customer_socket);
 
     if (strcmp(ack_msg->content, SUCCESS) == 0) {
-        printf("[+] Customer was able to buy %d pieces of item '%s'\n", amount, item_name);
+        printf("[+] Customer %d was able to buy %d pieces of item '%s'\n", getpid(), amount, item_name);
     } else if (strcmp(ack_msg->content, ITEM_STOCK_IS_UNSUFFICIENT) == 0) {
-        printf("[-] Customer was unable to buy %d pieces of item '%s' because it has been sold out\n", amount, item_name);
+        printf("[-] Customer %d was unable to buy %d pieces of item '%s' because it has been sold out\n", getpid(), amount, item_name);
         return -1;
     } else if (strcmp(ack_msg->content, ITEM_NOT_FOUND) == 0) {
-        printf("[-] Customer was unable to buy %d pieces of item '%s' because the item doesn't exist in the store\n", amount, item_name);
+        printf("[-] Customer %d was unable to buy %d pieces of item '%s' because the item doesn't exist in the store\n", getpid(), amount, item_name);
         return -1;
     } else if (strcmp(ack_msg->content, MSG_IN_WRONG_FORMAT) == 0) {
         printf("[-] Message '%s' hasn't been understood by the server\n", msg->content);
@@ -41,6 +41,7 @@ void automaticTest(int max_transactions, int min_transactions) {
 
 int main() {
     msleep(100);
+    startTimer();
     customer_socket = connectToServer(PORT);
     automaticTest(6500, 6000);
     closeConnection(customer_socket);
